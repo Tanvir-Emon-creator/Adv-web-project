@@ -1,16 +1,23 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_GUARD } from '@nestjs/core';
+
 import { UsersModule } from './users/users.module';
 import { PropertiesModule } from './properties/properties.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtTokenModule } from './jwt/jwt.module';
 
+import { RolesGuard } from './common/guards/roles.guard';
+
 @Module({
-  imports: [ UsersModule,
-             PropertiesModule,
-             AuthModule,
+  imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+
+    UsersModule,
+    PropertiesModule,
+    AuthModule,
+    JwtTokenModule,
 
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -22,8 +29,13 @@ import { JwtTokenModule } from './jwt/jwt.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+  ],
 
-    JwtTokenModule,
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
   ],
 })
 export class AppModule {}

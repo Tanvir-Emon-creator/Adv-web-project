@@ -12,7 +12,7 @@ import {
 
 import { PropertiesService } from './properties.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
-import { JwtGuard } from '../auth/jwt/jwt.guard';
+import { JwtGuard } from '../common/guards/jwt.guard';
 
 @Controller('properties')
 export class PropertiesController {
@@ -28,12 +28,12 @@ export class PropertiesController {
   search(
     @Query('location') location?: string,
     @Query('type') type?: string,
-    @Query('bedrooms') bedrooms?: number,
+    @Query('bedrooms') bedrooms?: string,
   ) {
     return this.propertiesService.search(
       location,
       type,
-      Number(bedrooms),
+      bedrooms ? Number(bedrooms) : undefined,
     );
   }
 
@@ -45,15 +45,15 @@ export class PropertiesController {
   @UseGuards(JwtGuard)
   @Patch(':id')
   update(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body() data: Partial<CreatePropertyDto>,
   ) {
-    return this.propertiesService.update(id, data);
+    return this.propertiesService.update(Number(id), data);
   }
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.propertiesService.remove(id);
+  remove(@Param('id') id: string) {
+    return this.propertiesService.remove(Number(id));
   }
 }
