@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Property } from './property.entity';
 import { CreatePropertyDto } from './dto/create-property.dto';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class PropertiesService {
@@ -27,4 +28,28 @@ export class PropertiesService {
       message: 'Property deleted successfully',
     };
   }
+  async update(id: number, data: Partial<CreatePropertyDto>) {
+  await this.propertyRepository.update(id, data);
+
+  return {
+    message: 'Property updated successfully',
+  };
+}
+async search(location?: string, type?: string, bedrooms?: number) {
+  const where: any = {};
+
+  if (location) {
+    where.location = Like(`%${location}%`);
+  }
+
+  if (type) {
+    where.type = type;
+  }
+
+  if (bedrooms) {
+    where.bedrooms = bedrooms;
+  }
+
+  return this.propertyRepository.find({ where });
+}
 }
