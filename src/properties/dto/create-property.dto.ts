@@ -1,24 +1,31 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreatePropertyDto {
   @IsNotEmpty()
-  title: string;
+  @IsString()
+  title!: string;
 
   @IsNotEmpty()
-  description: string;
+  @IsString()
+  description!: string;
 
+  @IsNotEmpty()
   @IsNumber()
-  price: number;
+  price!: number;
 
   @IsNotEmpty()
-  location: string;
+  @IsString()
+  location!: string;
 
   @IsNotEmpty()
-  type: string;
+  @IsString()
+  type!: string;
 
+  @IsNotEmpty()
   @IsNumber()
-  bedrooms: number;
+  bedrooms!: number;
 
   @IsNotEmpty()
-  contactPhone: string;
+  @IsString()
+  contactPhone!: string;
 }

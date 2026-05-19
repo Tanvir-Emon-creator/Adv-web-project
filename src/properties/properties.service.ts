@@ -12,7 +12,7 @@ export class PropertiesService {
     private propertyRepository: Repository<Property>,
   ) {}
 
-  create(createPropertyDto: CreatePropertyDto) {
+  async create(createPropertyDto: CreatePropertyDto) {
     const property = this.propertyRepository.create(createPropertyDto);
     return this.propertyRepository.save(property);
   }

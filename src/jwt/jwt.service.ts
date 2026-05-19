@@ -9,6 +9,7 @@ export class JwtTokenService {
     return this.jwtService.sign({
       id: user.id,
       email: user.email,
+      role: user.role,
     });
   }
 }
