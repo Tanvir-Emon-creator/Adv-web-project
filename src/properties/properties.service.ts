@@ -17,9 +17,21 @@ export class PropertiesService {
     return this.propertyRepository.save(property);
   }
 
-  findAll() {
-    return this.propertyRepository.find();
-  }
+  async findAll(page: number = 1, limit: number = 5) {
+  const skip = (page - 1) * limit;
+
+  const [data, total] = await this.propertyRepository.findAndCount({
+    skip,
+    take: limit,
+  });
+
+  return {
+    data,
+    total,
+    page,
+    lastPage: Math.ceil(total / limit),
+  };
+}
 
   async remove(id: number) {
     await this.propertyRepository.delete(id);

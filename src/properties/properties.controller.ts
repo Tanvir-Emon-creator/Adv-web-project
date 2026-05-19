@@ -38,9 +38,15 @@ export class PropertiesController {
   }
 
   @Get()
-  findAll() {
-    return this.propertiesService.findAll();
-  }
+findAll(
+  @Query('page') page: string,
+  @Query('limit') limit: string,
+) {
+  return this.propertiesService.findAll(
+    Number(page) || 1,
+    Number(limit) || 5,
+  );
+}
 
   @UseGuards(JwtGuard)
   @Patch(':id')
